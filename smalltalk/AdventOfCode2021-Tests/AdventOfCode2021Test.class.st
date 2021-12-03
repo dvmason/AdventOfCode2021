@@ -1180,5 +1180,14 @@ up 3
 down 8
 forward 2' day02a
       equals: 150.
-   self assert: self dataForDay02 day02a equals: nil
+   self assert: self dataForDay02 day02a equals: 1714950.
+   self
+      assert: 'forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2' day02b
+      equals: 900.
+   self assert: self dataForDay02 day02b equals: 1281977850
 ]
