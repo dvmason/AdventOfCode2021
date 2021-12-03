@@ -1165,7 +1165,9 @@ AdventOfCode2021Test >> setUp [
 { #category : #tests }
 AdventOfCode2021Test >> testDay01 [
    self assert: #( 199 200 208 210 200 207 240 269 260 263 ) day01a equals: 7.
-   self assert: self dataForDay01 day01a equals: nil
+   self assert: self dataForDay01 day01a equals: 1288.
+   self assert: #( 199 200 208 210 200 207 240 269 260 263 ) day01b equals: 5.
+   self assert: self dataForDay01 day01b equals: 1311
 ]
 
 { #category : #tests }
@@ -1177,6 +1179,6 @@ forward 8
 up 3
 down 8
 forward 2' day02a
-      equals: 7.
+      equals: 150.
    self assert: self dataForDay02 day02a equals: nil
 ]
