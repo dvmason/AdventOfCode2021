@@ -59,3 +59,45 @@ ByteString >> day03b [
 	co2 := lines day03Filter: 1 for: #least.
 	^ oxygen * co2
 ]
+
+{ #category : #'*AdventOfCode2021' }
+ByteString >> day04Common: successBlock [
+   | lines calledNumbers bingoCards currentCard |
+   lines := self lines.
+   calledNumbers := (lines first splitOn: $,) collect: #asNumber.
+   bingoCards := OrderedCollection new.
+   currentCard := nil.
+   lines allButFirst do: [:line | 
+      line ifEmpty: [currentCard := nil] ifNotEmpty: [
+         currentCard ifNil: [
+            currentCard := BingoCard new.
+            bingoCards add: currentCard
+            ].
+         currentCard add: (line substrings collect: #asNumber)
+         ]
+      ].
+   calledNumbers do: [:calledNumber | 
+      bingoCards do: [:card | 
+         card score ifNil: [
+            (card mark: calledNumber) ifTrue: [
+               successBlock value: card
+               ]
+            ]
+         ]
+      ].
+
+]
+
+{ #category : #'*AdventOfCode2021' }
+ByteString >> day04a [
+   self day04Common: [: card | ^ card score].
+   ^ #noWinningCard
+]
+
+{ #category : #'*AdventOfCode2021' }
+ByteString >> day04b [
+      | currentCard |
+currentCard := nil.
+              self day04Common: [: card | currentCard := card ].
+   ^ currentCard score
+]
