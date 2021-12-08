@@ -27,7 +27,7 @@ assert: card score equals: nil;
       deny: (card mark: 3);
       assert: (card mark: 4);
       assert: card count equals: (1 to: 25) sum - 15;
-	assert: card score equals: 1280
+	assert: card score equals: 1240
 ]
 
 { #category : #tests }
