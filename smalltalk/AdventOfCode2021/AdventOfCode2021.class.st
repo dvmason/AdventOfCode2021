@@ -56,3 +56,57 @@ AdventOfCode2021 >> day05b: aString [
 			  ]
 	]
 ]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day08a: aString [ 
+	| count |
+	count := 0.
+	aString lines do: [: line |
+		(line substrings last: 4) do: [: segments |
+			(segments size = 7 or: [ segments size <= 4 ]) ifTrue: [ count := count + 1 ]
+			]
+	].
+	^ count
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day08b: aString [
+   | count |
+   count := 0.
+   aString lines do: [:line | 
+      | digits examples fives sixes one two three four five six seven eight nine zero segments |
+      examples := line substrings first: 10.
+      digits := line substrings last: 4.
+      one := examples detect: [:example | example size = 2].
+      seven := examples detect: [:example | example size = 3].
+      four := examples detect: [:example | example size = 4].
+      eight := examples detect: [:example | example size = 7].
+      fives := examples select: [:example | example size = 5].
+      sixes := examples select: [:example | example size = 6].
+      nine := sixes detect: [:each | 
+                 (each includesAll: one) and: [each includesAll: four]].
+      zero := sixes detect: [:each | 
+                 (each includesAll: one) and: [(each includesAll: four) not]].
+      six := sixes detect: [:each | 
+                each ~= zero and: [each ~= nine]].
+      three := fives detect: [:each | each includesAll: one].
+      five := fives detect: [:each | six includesAll: each].
+      two := fives detect: [:each | each ~= three and: [each ~= five]].
+      segments := Dictionary new.
+      segments
+         at: zero sorted put: 0;
+         at: one sorted put: 1;
+         at: two sorted put: 2;
+         at: three sorted put: 3;
+         at: four sorted put: 4;
+         at: five sorted put: 5;
+         at: six sorted put: 6;
+         at: seven sorted put: 7;
+         at: eight sorted put: 8;
+         at: nine sorted put: 9.
+      digits with: #( 1000 100 10 1 )
+         do: [:digit :multiplier | 
+         count := (segments at: digit sorted) * multiplier + count]
+      ].
+   ^ count
+]

@@ -1,0 +1,13 @@
+"
+Please describe the package using the class comment of the included manifest class. The manifest class also includes other additional metadata for the package. These meta data are used by other tools such as the SmalllintManifestChecker and the critics Browser
+"
+Class {
+	#name : #ManifestAdventOfCode2021,
+	#superclass : #PackageManifest,
+	#category : #'AdventOfCode2021-Manifest'
+}
+
+{ #category : #'code-critics' }
+ManifestAdventOfCode2021 class >> ruleLongMethodsRuleV1FalsePositive [
+	^ #(#(#(#RGPackageDefinition #(#AdventOfCode2021)) #'2021-12-10T00:34:37.476445-05:00') )
+]
