@@ -110,3 +110,51 @@ AdventOfCode2021 >> day08b: aString [
       ].
    ^ count
 ]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day09: aString [
+   | prevRow allRows |
+   allRows := OrderedCollection new.
+   prevRow := OrderedCollection new.
+   aString lines do: [:line | 
+      | cell prevCell currRow |
+      prevCell := nil.
+      currRow := OrderedCollection new.
+      allRows add: currRow.
+      line withIndexDo: [:char :index | 
+         cell := MapCell new height: char asString asNumber.
+         currRow add: cell.
+         cell west: prevCell.
+         prevCell east: cell.
+         prevCell := cell.
+         prevRow size < currRow size ifTrue: [prevRow add: nil].
+         (prevRow at: index) south: cell.
+         cell north: (prevRow at: index)
+         ].
+      prevRow := currRow
+      ].
+   ^ allRows
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day09a: aString [
+   | allRows riskSum |
+   allRows := self day09: aString.
+   riskSum := 0.
+   allRows do: [:row | 
+      row do: [:cell | 
+         cell isLowPoint ifTrue: [riskSum := riskSum + cell riskLevel]]].
+   ^ riskSum
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day09b: aString [
+   | allRows basins basinSize |
+   allRows := self day09: aString.
+   basins := Set new.
+   allRows do: [:row | row do: [:cell | basins add: cell basin]].
+basinSize := 1.
+   ((basins asArray sort: [:l :r | l basinSize >= r basinSize]) first: 3) 
+      do: [:basin | basinSize := basinSize * basin basinSize].
+   ^ basinSize
+]

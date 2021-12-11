@@ -3918,14 +3918,21 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 { #category : #'day tests' }
 AdventOfCode2021Test >> testDay09 [
    self
-      assert: (aoc day09a:
-             '2199943210
+      assert: (aoc day09a: '2199943210
 3987894921
 9856789892
 8767896789
 9899965678')
-      equals: 26.
-   self assert: (aoc day09a: self dataForDay09) equals: nil
+      equals: 15.
+   self assert: (aoc day09a: self dataForDay09) equals: 585.
+   self
+      assert: (aoc day09b: '2199943210
+3987894921
+9856789892
+8767896789
+9899965678')
+      equals: 1134.
+   self assert: (aoc day09b: self dataForDay09) equals: 827904
 ]
 
 { #category : #'day tests' }

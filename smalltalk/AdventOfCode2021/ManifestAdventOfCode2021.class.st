@@ -8,6 +8,11 @@ Class {
 }
 
 { #category : #'code-critics' }
+ManifestAdventOfCode2021 class >> ruleCollectionProtocolRuleV1FalsePositive [
+	^ #(#(#(#RGPackageDefinition #(#AdventOfCode2021)) #'2021-12-10T21:32:46.735314-05:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestAdventOfCode2021 class >> ruleLongMethodsRuleV1FalsePositive [
 	^ #(#(#(#RGPackageDefinition #(#AdventOfCode2021)) #'2021-12-10T00:34:37.476445-05:00') )
 ]
