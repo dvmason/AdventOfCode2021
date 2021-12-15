@@ -14,6 +14,31 @@ Class {
 	#category : #'AdventOfCode2021-Support'
 }
 
+{ #category : #actions }
+MapCell class >> load: aString [
+   | prevRow allRows |
+   allRows := OrderedCollection new.
+   prevRow := OrderedCollection new.
+   aString lines do: [:line | 
+      | cell prevCell currRow |
+      prevCell := nil.
+      currRow := OrderedCollection new.
+      allRows add: currRow.
+      line withIndexDo: [:char :index | 
+         cell := self new height: char asString asNumber.
+         currRow add: cell.
+         cell west: prevCell.
+         prevCell east: cell.
+         prevCell := cell.
+         prevRow size < currRow size ifTrue: [prevRow add: nil].
+         (prevRow at: index) south: cell.
+         cell north: (prevRow at: index)
+         ].
+      prevRow := currRow
+      ].
+   ^ allRows
+]
+
 { #category : #calculating }
 MapCell >> basin [
    ^ self basinIgnoring: (Set new add: nil;yourself)

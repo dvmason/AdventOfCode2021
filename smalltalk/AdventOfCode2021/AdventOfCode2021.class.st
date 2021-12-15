@@ -7,12 +7,35 @@ Class {
 	#instVars : [
 		'points'
 	],
+	#classVars : [
+		'ChunkMatch',
+		'IllegalCharacter'
+	],
 	#category : #'AdventOfCode2021-Core'
 }
+
+{ #category : #'class initialization' }
+AdventOfCode2021 class >> initialize [
+   ChunkMatch := { 
+                    ($( -> $)).
+                    ($[ -> $]).
+                    (${ -> $}).
+                    ($< -> $>) } asDictionary.
+   IllegalCharacter := { 
+                          ($) -> 3).
+                          ($] -> 57).
+                          ($} -> 1197).
+                          ($> -> 25137) } asDictionary
+]
 
 { #category : #updating }
 AdventOfCode2021 >> addPoint: aPoint [ 
 	points at: aPoint ifPresent: [: currentValue | points at: aPoint put: currentValue + 1 ] ifAbsentPut:  1
+]
+
+{ #category : #parsing }
+AdventOfCode2021 >> correctChunk: aString [ 
+	self shouldBeImplemented.
 ]
 
 { #category : #'day problem' }
@@ -112,49 +135,56 @@ AdventOfCode2021 >> day08b: aString [
 ]
 
 { #category : #'day problem' }
-AdventOfCode2021 >> day09: aString [
-   | prevRow allRows |
-   allRows := OrderedCollection new.
-   prevRow := OrderedCollection new.
-   aString lines do: [:line | 
-      | cell prevCell currRow |
-      prevCell := nil.
-      currRow := OrderedCollection new.
-      allRows add: currRow.
-      line withIndexDo: [:char :index | 
-         cell := MapCell new height: char asString asNumber.
-         currRow add: cell.
-         cell west: prevCell.
-         prevCell east: cell.
-         prevCell := cell.
-         prevRow size < currRow size ifTrue: [prevRow add: nil].
-         (prevRow at: index) south: cell.
-         cell north: (prevRow at: index)
-         ].
-      prevRow := currRow
-      ].
-   ^ allRows
-]
-
-{ #category : #'day problem' }
 AdventOfCode2021 >> day09a: aString [
    | allRows riskSum |
-   allRows := self day09: aString.
+   allRows := MapCell load: aString.
    riskSum := 0.
-   allRows do: [:row | 
-      row do: [:cell | 
-         cell isLowPoint ifTrue: [riskSum := riskSum + cell riskLevel]]].
+   allRows cellsDo: [:cell | 
+         cell isLowPoint ifTrue: [riskSum := riskSum + cell riskLevel]].
    ^ riskSum
 ]
 
 { #category : #'day problem' }
 AdventOfCode2021 >> day09b: aString [
    | allRows basins basinSize |
-   allRows := self day09: aString.
+   allRows := MapCell load: aString.
    basins := Set new.
-   allRows do: [:row | row do: [:cell | basins add: cell basin]].
-basinSize := 1.
-   ((basins asArray sort: [:l :r | l basinSize >= r basinSize]) first: 3) 
-      do: [:basin | basinSize := basinSize * basin basinSize].
+   allRows cellsDo: [:cell | basins add: cell basin].
+   basinSize := 1.
+   ((basins asArray sort: [:l :r | l basinSize >= r basinSize]) first: 3) do: [
+      :basin | basinSize := basinSize * basin basinSize].
    ^ basinSize
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day10a: aString [
+   | count |
+   count := 0.
+   aString linesDo: [:line | 
+      | result |
+      result := self parseChunk: line.
+      count := count
+               +
+               (result isNumber ifTrue: [ result ] ifFalse: [0])
+      ].
+   ^ count
+]
+
+{ #category : #day }
+AdventOfCode2021 >> day13a: aString [ 
+	points := 
+	(aString lines collect: #asPoint thenSelect: #notNil) asSet.
+	^ (points foldAOC: (aString lines select: #foldAlong) first) size
+]
+
+{ #category : #parsing }
+AdventOfCode2021 >> parseChunk: aString [ 
+	| match result |
+	aString ifEmpty: [ ^ '' ].
+	match := ChunkMatch at: aString first ifAbsent: [ ^ aString ].
+	result := self parseChunk: aString allButFirst.
+	result isString ifFalse: [ ^ result ].
+	result ifEmpty: [ ^ '' ].
+	result first = match ifFalse: [ ^ IllegalCharacter at: result first].
+	^ self parseChunk: result allButFirst
 ]

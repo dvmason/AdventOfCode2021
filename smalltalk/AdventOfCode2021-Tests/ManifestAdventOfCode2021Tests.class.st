@@ -13,6 +13,11 @@ ManifestAdventOfCode2021Tests class >> ruleClassNotReferencedRuleV1FalsePositive
 ]
 
 { #category : #'code-critics' }
+ManifestAdventOfCode2021Tests class >> ruleLongMethodsRuleV1FalsePositive [
+	^ #(#(#(#RGPackageDefinition #(#'AdventOfCode2021-Tests')) #'2021-12-14T23:10:05.635259-05:00') )
+]
+
+{ #category : #'code-critics' }
 ManifestAdventOfCode2021Tests class >> ruleSentNotImplementedRuleV1FalsePositive [
 	^ #(#(#(#RGClassDefinition #(#AdventOfCode2021Test)) #'2021-12-01T22:29:53.437863-05:00') )
 ]

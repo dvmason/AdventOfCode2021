@@ -5,6 +5,19 @@ Class {
 }
 
 { #category : #tests }
+MapCellTest >> testLoad [
+   | allRows riskSum |
+   allRows := MapCell load: '02
+21'.
+   riskSum := 0.
+   allRows do: [:row | 
+      row do: [:cell | 
+         cell isLowPoint ifTrue: [riskSum := riskSum + cell riskLevel]]].
+
+   self assert: riskSum equals: 3
+]
+
+{ #category : #tests }
 MapCellTest >> testSingleCell [
    | cell |
    cell := MapCell new height: 3.
