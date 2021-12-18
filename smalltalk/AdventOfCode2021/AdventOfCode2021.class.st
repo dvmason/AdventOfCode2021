@@ -177,6 +177,62 @@ AdventOfCode2021 >> day13a: aString [
 	^ (points foldAOC: (aString lines select: #foldAlong) first) size
 ]
 
+{ #category : #'day problem' }
+AdventOfCode2021 >> day13b: aString [
+   points := (aString lines collect: #asPoint thenSelect: #notNil) asSet.
+   (aString lines select: #foldAlong) do: [: foldInstruction |
+			points foldAOC: foldInstruction ].
+		^ points formatAOC
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day14a: aString [
+   | pairInsertions template counts |
+   pairInsertions := Dictionary new.
+   aString lines do: [:line | 
+      | substrings |
+      substrings := line substrings.
+      substrings size = 3 ifTrue: [
+         pairInsertions at: substrings first put: substrings last first].
+      substrings size = 1 ifTrue: [template := substrings first]
+      ].
+   10 timesRepeat: [
+      | previous |
+      previous := nil.
+      template := String streamContents: [:stream | 
+                     template do: [:char | 
+                        previous ifNotNil: [
+                           pairInsertions at: (String with: previous with: char)
+                              ifPresent: [:insertChar | 
+                              stream nextPut: insertChar]
+                           ].
+                        stream nextPut: char.
+                        previous := char
+                        ]
+                     ]
+      ].
+   counts := template asBag valuesAndCounts.
+   ^ counts max - counts min
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day14b: aString repeat: repeatTimes [
+   | pairInsertions template counts |
+   pairInsertions := Dictionary new.
+   aString lines do: [:line | 
+      | substrings |
+      substrings := line substrings.
+      substrings size = 3 ifTrue: [
+         pairInsertions at: substrings first put: substrings last first].
+      substrings size = 1 ifTrue: [template := substrings first]
+      ].
+   repeatTimes timesRepeat: [
+self halt
+      ].
+   counts := template asBag valuesAndCounts.
+   ^ counts max - counts min
+]
+
 { #category : #parsing }
 AdventOfCode2021 >> parseChunk: aString [ 
 	| match result |

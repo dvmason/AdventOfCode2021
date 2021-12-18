@@ -5185,15 +5185,43 @@ fold along y=7
 fold along x=5
 ')
       equals: 17.
+   self assert: (aoc day13a: self dataForDay13) equals: 720.
    self
-      assert: (aoc day13a: self dataForDay13)
-      equals: 720
+      assert: (aoc day13b: '6,10
+0,14
+9,10
+0,3
+10,4
+4,11
+6,0
+6,12
+4,1
+0,13
+10,12
+3,4
+3,0
+8,4
+1,10
+2,14
+8,10
+9,0
+
+fold along y=7
+fold along x=5
+')
+      equals: '#####
+#...#
+#...#
+#...#
+#####'.
+	Transcript clear;cr;show: (aoc day13b: self dataForDay13);cr
 ]
 
 { #category : #'day tests' }
 AdventOfCode2021Test >> testDay14 [
    self
-      assert: (aoc day14a: 'NNCB
+      assert: (aoc
+             day14a: 'NNCB
 
 CH -> B
 HH -> N
@@ -5211,8 +5239,53 @@ BB -> N
 BC -> B
 CC -> N
 CN -> C')
-      equals: 17.
-   self assert: (aoc day14a: self dataForDay14) equals: nil
+      equals: 1588.
+   self assert: (aoc day14a: self dataForDay14) equals: 2768.
+   self
+      assert: (aoc
+             day14b: 'NNCB
+
+CH -> B
+HH -> N
+CB -> H
+NH -> C
+HB -> C
+HC -> B
+HN -> C
+NN -> C
+BH -> H
+NC -> B
+NB -> B
+BN -> B
+BB -> N
+BC -> B
+CC -> N
+CN -> C' repeat: 10)
+      equals: 1588.
+   self
+      assert: (aoc
+             day14b: 'NNCB
+
+CH -> B
+HH -> N
+CB -> H
+NH -> C
+HB -> C
+HC -> B
+HN -> C
+NN -> C
+BH -> H
+NC -> B
+NB -> B
+BN -> B
+BB -> N
+BC -> B
+CC -> N
+CN -> C' repeat: 40)
+      equals: 2188189693529.
+   self assert: (aoc day14b: self dataForDay14 repeat: 10) equals: 2768.
+   self assert: (aoc day14b: self dataForDay14 repeat: 40) equals: nil.
+
 ]
 
 { #category : #'day tests' }
