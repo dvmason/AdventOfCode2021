@@ -227,7 +227,20 @@ AdventOfCode2021 >> day14b: aString repeat: repeatTimes [
       substrings size = 1 ifTrue: [template := substrings first]
       ].
    repeatTimes timesRepeat: [
-self halt
+	" this algorithm doesn't work because with 40 repetitions, the string grows to trillions of characters "
+      | previous |
+      previous := nil.
+      template := String streamContents: [:stream | 
+                     template do: [:char | 
+                        previous ifNotNil: [
+                           pairInsertions at: (String with: previous with: char)
+                              ifPresent: [:insertChar | 
+                              stream nextPut: insertChar]
+                           ].
+                        stream nextPut: char.
+                        previous := char
+                        ]
+                     ]
       ].
    counts := template asBag valuesAndCounts.
    ^ counts max - counts min
