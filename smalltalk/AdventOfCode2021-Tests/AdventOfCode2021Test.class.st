@@ -6827,8 +6827,13 @@ AdventOfCode2021Test >> testDay19 [
 
 { #category : #'day tests' }
 AdventOfCode2021Test >> testDay20 [
+   self assert: (aoc day20Load: self dataForDay20Small) count equals: 10.
+   self assert: aoc enhanceImage count equals: 24.
+   self assert: aoc enhanceImage count equals: 35.
    self assert: (aoc day20a: self dataForDay20Small) equals: 35.
-   self assert: (aoc day20a: self dataForDay20) equals: nil
+   self assert: (aoc day20a: self dataForDay20) equals: 5680.
+   self assert: (aoc day20b: self dataForDay20Small) equals: 3351.
+   self assert: (aoc day20b: self dataForDay20) equals: 19766
 ]
 
 { #category : #'day tests' }

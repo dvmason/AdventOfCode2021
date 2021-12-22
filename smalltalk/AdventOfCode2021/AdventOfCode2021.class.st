@@ -5,7 +5,12 @@ Class {
 	#name : #AdventOfCode2021,
 	#superclass : #Object,
 	#instVars : [
-		'points'
+		'points',
+		'imageEnhancementString',
+		'image',
+		'infiniteImageColour',
+		'imageHeight',
+		'imageWidth'
 	],
 	#classVars : [
 		'ChunkMatch',
@@ -36,6 +41,14 @@ AdventOfCode2021 >> addPoint: aPoint [
 { #category : #parsing }
 AdventOfCode2021 >> correctChunk: aString [ 
 	self shouldBeImplemented.
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> count [
+	| count |
+	count := 0.
+	('' join: image) do: [: char | char = $# ifTrue: [ count := count + 1 ] ].
+	^ count
 ]
 
 { #category : #'day problem' }
@@ -244,6 +257,58 @@ AdventOfCode2021 >> day14b: aString repeat: repeatTimes [
       ].
    counts := template asBag valuesAndCounts.
    ^ counts max - counts min
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day20Load: aString [ 
+	imageEnhancementString := aString lines first.
+	image := aString lines allButFirst: 2.
+	infiniteImageColour := $.
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day20a: aString [ 
+	self day20Load: aString.
+	self enhanceImage.
+	self enhanceImage.
+	^ self count
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> day20b: aString [ 
+	self day20Load: aString.
+	50 timesRepeat: [
+	self enhanceImage].
+	^ self count
+]
+
+{ #category : #'day problem' }
+AdventOfCode2021 >> enhanceImage [
+	imageHeight := image size.
+	imageWidth := image first size.
+	image := Array streamContents: [: aStream |
+		0 to: imageHeight+1 do: [: row |
+			aStream nextPut: (String streamContents: [: sStream |
+					0 to: imageWidth+1 do: [: col |
+						sStream nextPut: (self enhancedPixelAt: row and: col) ]
+				]) ]
+		 ].
+	infiniteImageColour := infiniteImageColour = $. ifTrue: [ imageEnhancementString first ] ifFalse: [ imageEnhancementString last ]
+]
+
+{ #category : #accessing }
+AdventOfCode2021 >> enhancedPixelAt: rowBase and: colBase [
+	| index |
+	index := 0.
+	rowBase-1 to: rowBase+1 do: [: row |
+		colBase-1 to: colBase+1 do: [ : col |
+			index := index * 2.
+			((row >0 and: [ row <= imageHeight and: [ col >0 and: [ col <= imageWidth ] ] ]) ifTrue: [
+					(image at: row) at: col
+				] ifFalse: [ infiniteImageColour ]) = $# ifTrue: [index := index + 1]
+			 ]
+		].
+	^ imageEnhancementString at: index+1
 ]
 
 { #category : #parsing }
