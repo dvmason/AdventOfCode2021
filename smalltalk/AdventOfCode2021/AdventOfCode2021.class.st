@@ -170,7 +170,7 @@ AdventOfCode2021 >> day10a: aString [
    ^ count
 ]
 
-{ #category : #day }
+{ #category : #'day problem' }
 AdventOfCode2021 >> day13a: aString [ 
 	points := 
 	(aString lines collect: #asPoint thenSelect: #notNil) asSet.
